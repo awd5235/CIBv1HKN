@@ -68,6 +68,10 @@ void loop()
   // Read and determine decimal value for vdd2p5
   vdd2p5 = analogRead(VDD2P5);
   vdd2p5 = (vdd2p5*5)/1024;
+
+  // Read and determine decimal value for vddio
+  vddio = analogRead(VDDIO);
+  vddio = (vddio*5)/1024;
   
   // Read and determine decimal value for tsense2
   tsense2 = analogRead(TSENSE2);
@@ -93,12 +97,14 @@ void loop()
   Serial.print("     ");
   Serial.print(vdd2p5);
   Serial.print("    ");
-  Serial.print(tsense2);
-  Serial.print("     ");
-  Serial.print(tsense);
+  Serial.print(vddio);
   Serial.print("    ");
+  Serial.print(tsense2);
+  Serial.print("    ");
+  Serial.print(tsense);
+  Serial.print("   ");
   Serial.print(tsense0);
-  Serial.print("     ");
+  Serial.print("    ");
   Serial.print(fheart);
   Serial.print("\n");
   

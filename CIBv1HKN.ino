@@ -44,70 +44,69 @@ float tsense  = 0;
 float tsense0 = 0;
 bool fheart = 0;
 
-void setup() 
+void setup()
 {
   Serial.begin(9600);    // 9600 Baud Rate
-  Serial.print("VSUB    VDDA    VDD3P3   VDD2P5  VDDIO   TSENSE2  TSENSE  TSENSE0  FHEART\n");     // Print header with variable names one time.
   // Arduino pins initialize as inputs by default, no further initialization necessary.
 }
 
-void loop() 
+void loop()
 {
-  // Read and determine decimal value for vsub
+  // Read and determine decimal value for vsub (V)
   vsub = analogRead(VSUB);
-  vsub = (vsub*5)/1024;
+  //vsub = (vsub * 5) / 1024;
 
-  // Read and determine decimal value for vdda
+  // Read and determine decimal value for vdda (V)
   vdda = analogRead(VDDA);
-  vdda = (vdda*5)/1024;
+  //vdda = (vdda * 5) / 1024;
 
-  // Read and determine decimal value for vdd3p3
+  // Read and determine decimal value for vdd3p3 (V)
   vdd3p3 = analogRead(VDD3P3);
-  vdd3p3 = (vdd3p3*5)/1024;
-  
-  // Read and determine decimal value for vdd2p5
-  vdd2p5 = analogRead(VDD2P5);
-  vdd2p5 = (vdd2p5*5)/1024;
+  //vdd3p3 = (vdd3p3 * 5) / 1024;
 
-  // Read and determine decimal value for vddio
+  // Read and determine decimal value for vdd2p5 (V)
+  vdd2p5 = analogRead(VDD2P5);
+  //vdd2p5 = (vdd2p5 * 5) / 1024;
+
+  // Read and determine decimal value for vddio (V)
   vddio = analogRead(VDDIO);
-  vddio = (vddio*5)/1024;
-  
-  // Read and determine decimal value for tsense2
+  //vddio = (vddio * 5) / 1024;
+
+  // Read and determine decimal value for tsense2 (C)
   tsense2 = analogRead(TSENSE2);
-  tsense2 = (((tsense2*5)/1024)-0.5)*100;
-  
-  // Read and determine decimal value for tsense
+  //tsense2 = (((tsense2 * 5) / 1024) - 0.5) * 100;
+
+  // Read and determine decimal value for tsense (C)
   tsense = analogRead(TSENSE);
-  tsense = (((tsense*5)/1024)-0.5)*100;
-  
-  // Read and determine decimal value for tsense0
+  //tsense = (((tsense * 5) / 1024) - 0.5) * 100;
+
+  // Read and determine decimal value for tsense0 (C)
   tsense0 = analogRead(TSENSE0);
-  tsense0 = (((tsense0*5)/1024)-0.5)*100;
-  
+  //tsense0 = (((tsense0 * 5) / 1024) - 0.5) * 100;
+
   // Read value for fheart
   fheart = digitalRead(fheart);
 
   // Print values to terminal
   Serial.print(vsub);
-  Serial.print("    ");
+  Serial.print(" ");
   Serial.print(vdda);
-  Serial.print("    ");
+  Serial.print(" ");
   Serial.print(vdd3p3);
-  Serial.print("     ");
+  Serial.print(" ");
   Serial.print(vdd2p5);
-  Serial.print("    ");
+  Serial.print(" ");
   Serial.print(vddio);
-  Serial.print("    ");
+  Serial.print(" ");
   Serial.print(tsense2);
-  Serial.print("    ");
+  Serial.print(" ");
   Serial.print(tsense);
-  Serial.print("   ");
+  Serial.print(" ");
   Serial.print(tsense0);
-  Serial.print("    ");
+  Serial.print(" ");
   Serial.print(fheart);
   Serial.print("\n");
-  
+ 
   delay(500); // delay half a second
 }
 

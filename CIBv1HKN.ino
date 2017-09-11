@@ -1,12 +1,12 @@
 /*
     Adam Dykhouse
-    6/30/2017
+    9/6/2017
     Pennsylvania State University
     Dept. of Physics
 
     CIBv1HKN
       This sketch allows the Arduino nano to take a select group of signals from the CIBv1 (via DB15 connector)
-      and print the values of each signal to a console or terminal once every half a second (via USB) for monitoring.
+      and pass the integer DAC output values of each signal to a python program over serial USB every second.
 
     CIBv1 Signals     Arduino Pin       DB15 Pin
       VSUB                A0              7
@@ -52,37 +52,29 @@ void setup()
 
 void loop()
 {
-  // Read and determine decimal value for vsub (V)
+  // Read value for vsub (V)
   vsub = analogRead(VSUB);
-  //vsub = (vsub * 5) / 1024;
 
-  // Read and determine decimal value for vdda (V)
+  // Read value for vdda (V)
   vdda = analogRead(VDDA);
-  //vdda = (vdda * 5) / 1024;
 
-  // Read and determine decimal value for vdd3p3 (V)
+  // Read value for vdd3p3 (V)
   vdd3p3 = analogRead(VDD3P3);
-  //vdd3p3 = (vdd3p3 * 5) / 1024;
 
-  // Read and determine decimal value for vdd2p5 (V)
+  // Read value for vdd2p5 (V)
   vdd2p5 = analogRead(VDD2P5);
-  //vdd2p5 = (vdd2p5 * 5) / 1024;
 
-  // Read and determine decimal value for vddio (V)
+  // Read value for vddio (V)
   vddio = analogRead(VDDIO);
-  //vddio = (vddio * 5) / 1024;
 
-  // Read and determine decimal value for tsense2 (C)
+  // Read value for tsense2 (C)
   tsense2 = analogRead(TSENSE2);
-  //tsense2 = (((tsense2 * 5) / 1024) - 0.5) * 100;
 
-  // Read and determine decimal value for tsense (C)
+  // Read value for tsense (C)
   tsense = analogRead(TSENSE);
-  //tsense = (((tsense * 5) / 1024) - 0.5) * 100;
 
-  // Read and determine decimal value for tsense0 (C)
+  // Read value for tsense0 (C)
   tsense0 = analogRead(TSENSE0);
-  //tsense0 = (((tsense0 * 5) / 1024) - 0.5) * 100;
 
   // Read value for fheart
   fheart = digitalRead(fheart);
@@ -107,7 +99,7 @@ void loop()
   Serial.print(fheart);
   Serial.print("\n");
  
-  delay(500); // delay half a second
+  delay(1000); // delay half a second
 }
 
 

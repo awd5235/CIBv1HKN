@@ -8,10 +8,13 @@ an Arduino Nano. The Nano converts all CIB signals to digital numbers and
 transfers those raw numbers to this program via serial USB (ASCII).
 """
 
+import signal
+import sys
+import time
 import serial # Library allowing serial communication
 import datetime # Library allowing time stamp functionality
-import num.py as np
-import matplotlib.pyplot as plt # Library allowing plotting functionality
+#import num.py as np
+#import matplotlib.pyplot as plt # Library allowing plotting functionality
 
 # Write functions to convert each Arduino DAC output (string) to a physical value (float)
 def d2p_vsub(x):
@@ -41,12 +44,25 @@ def d2p_tsense0(x):
 def d2p_fheart(x):
     return int(x)
 
+# When control+c is entered, end program
+def signal_handler(signal, frame):
+    file.close()
+    sys.exit(0)
+
+# Initialize Interrupt
+signal.signal(signal.SIGINT, signal_handler)
+
 # Initialize USB serial communication to Arduino
 arduino = serial.Serial('/dev/cu.usbserial-A105OHGP', 9600, timeout=10)
 
-# Print header (':'=modifier, '>'=justify right, '>'=justify left) 
-print'{:20} {:>5}  {:>4}  {:>6}  {:>6}  {:>5}  {:>7}  {:>6}  {:>7}  {:>6}'.format(' ','VSUB','VDDA','VDD3P3','VDD2P5','VDDIO','TSENSE2','TSENSE','TSENSE0','FHEART')
+# Initialize text file to write to
+file = open('cib_hkn_{}.txt'.format(datetime.datetime.now()),'w')
 
+# Print header to console (':'=modifier, '>'=justify right, '>'=justify left) 
+print'{:27} {:>5}  {:>4}  {:>6}  {:>6}  {:>5}  {:>7}  {:>6}  {:>7}  {:>6}'.format(' ','VSUB','VDDA','VDD3P3','VDD2P5','VDDIO','TSENSE2','TSENSE','TSENSE0','FHEART')
+
+# print header to text file
+file.write('{:27} {:>5}  {:>4}  {:>6}  {:>6}  {:>5}  {:>7}  {:>6}  {:>7}  {:>6}\n'.format(' ','VSUB','VDDA','VDD3P3','VDD2P5','VDDIO','TSENSE2','TSENSE','TSENSE0','FHEART'))
 
 # Continuously loop
 while True:
@@ -65,8 +81,10 @@ while True:
         TSENSE0 = d2p_tsense0(rawData[7])
         FHEART = d2p_fheart(rawData[8])
         
-        # Print actual values to the table with time stamp
+        # Print actual values to the console with time stamp
         print '{}  {:>5.2f}  {:>4.2f}  {:>6.2f}  {:>6.2f}  {:>5.2f}  {:>7.2f}  {:>6.2f}  {:>7.2f}  {:>6d}'.format(datetime.datetime.now(),VSUB,VDDA,VDD3P3,VDD2P5,VDDIO,TSENSE2,TSENSE,TSENSE0,FHEART)
     
-    
+        # Write a line to the text file
+        file.write('{}  {:>5.2f}  {:>4.2f}  {:>6.2f}  {:>6.2f}  {:>5.2f}  {:>7.2f}  {:>6.2f}  {:>7.2f}  {:>6d}\n'.format(datetime.datetime.now(),VSUB,VDDA,VDD3P3,VDD2P5,VDDIO,TSENSE2,TSENSE,TSENSE0,FHEART))
+        
     # Otherwise, rawData is not a full line, skip until sensible data is read from Serial

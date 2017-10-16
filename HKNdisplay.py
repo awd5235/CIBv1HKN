@@ -10,7 +10,6 @@ transfers those raw numbers to this program via serial USB (ASCII).
 
 import signal
 import sys
-import time
 import serial # Library allowing serial communication
 import datetime # Library allowing time stamp functionality
 #import num.py as np
@@ -55,8 +54,8 @@ signal.signal(signal.SIGINT, signal_handler)
 # Initialize USB serial communication to Arduino
 arduino = serial.Serial('/dev/cu.usbserial-A105OHGP', 9600, timeout=10)
 
-# Initialize text file to write to
-file = open('cib_hkn_{}.txt'.format(datetime.datetime.now()),'w')
+# Initialize text file to write
+file = open('cib_hkn_{:%m-%d-%Y-%H-%M-%S}.txt'.format(datetime.datetime.now()),'w+')
 
 # Print header to console (':'=modifier, '>'=justify right, '>'=justify left) 
 print'{:27} {:>5}  {:>4}  {:>6}  {:>6}  {:>5}  {:>7}  {:>6}  {:>7}  {:>6}'.format(' ','VSUB','VDDA','VDD3P3','VDD2P5','VDDIO','TSENSE2','TSENSE','TSENSE0','FHEART')
